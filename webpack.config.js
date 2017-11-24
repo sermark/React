@@ -11,7 +11,7 @@ const webpackConfig = {
 
 	output: {
 		filename: 'bundle.js',
-		path: __dirname + '/static/build'
+		path: __dirname + '/static/build/'
 		// publicPath: '/static/build'
 		// library: '[name]'
 	},
@@ -24,7 +24,7 @@ const webpackConfig = {
 	module: {
 		loaders: [
 			{
-				test: /\.jsx?$/,
+				// test: /\.jsx?$/,
 				exclude: [/node_modules/],
 				loader: "babel-loader",
 				query: {
@@ -32,39 +32,24 @@ const webpackConfig = {
 				}
 			},
 			{
-                test: /\.sass$/,
+				test: /\.sass$/,
 				use: ExtractTextPlugin.extract({
-        			fallback: 'style-loader',
-        			use: [
-					{
-						loader: "css-loader", options: {
-							sourceMap: true
-						}
-					}, {
-						loader: "sass-loader", options: {
-							sourceMap: true
-						}
-					}]
-      			})
+					fallback: "style-loader",
+					use: ['css-loader', 'sass-loader']
+				})
             }
 		]
 	},
     devServer: {
         host: 'localhost',
         port: 8080,
-		contentBase: './static/build',
-		hot: true,
-		watchContentBase: true
+		contentBase: './static/'
     },
 	plugins: [
-		new ExtractTextPlugin('style.css', {
-			allChunks: true
-		}),
-		new webpack.NamedModulesPlugin(),
-		new webpack.HotModuleReplacementPlugin(),
-		new CleanWebpackPlugin(['./static/build/!index.html'], {
-			verbose: true, 
-			dry: false
+		new ExtractTextPlugin({
+			filename: 'style.css',
+			allChunks: true,
+			disable: true
 		})
 	]
 };
