@@ -7,8 +7,10 @@ class AddToDo extends Component {
 
         this.state = {
             term: '',
-            date: '',
-            items: []
+            items: {
+                item : [],
+                date: ''
+            }
         };
     }
 
@@ -20,8 +22,10 @@ class AddToDo extends Component {
         } else {
             this.setState({
                 term: '',
-                date: today,
-                items: [...this.state.items, this.state.term]
+                items: {
+                    item: [...this.state.items.item, this.state.term],
+                    date : new Date()
+                }
             });
         }
     }
@@ -39,9 +43,12 @@ class AddToDo extends Component {
                 {/* <List items={this.state.items}/> */}
                 <ul>
                     {
-                    this.state.items.map((item,index) => <li key={index}>
-                        {item}
-                        <span>{this.state.date.toLocaleTimeString()}</span>
+                   
+                    
+
+                    this.state.items.item.map((item,index) => <li key={index}>
+                        {item.item}
+                        <span>{this.state.items.date.toLocaleTimeString()}</span>
                         <button>Edit</button>
                         <button>Remove</button>
                     </li>)
