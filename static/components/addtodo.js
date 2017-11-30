@@ -1,41 +1,51 @@
 import React, { Component } from 'react';
-//import List from './list';
+import List from './list';
 
 class AddToDo extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            term: '',
             items: []
         };
     }
 
     onSubmit = (event) => {
         event.preventDefault();
-        const newValue = this.input.value;
+        const newValue = this.state.term;
 
         if(newValue == '') {
             return false;
         } else {
-            var newItem = {
+            const newItem = {
                 text: newValue,
-                date: new Date().toLocaleTimeString(),
+                date: this.setDate(),
+                visible: true
             }
-            
-            var newItems = [...this.state.items].push(newItem);
-
+            const newItems = [...this.state.items, newItem];
             this.setState({
-                items: newItems
+                term: '',
+                items: newItems,
             });
-
         }
     }
 
-    render() {
+    onChange = (event) => {
+        this.setState({term: event.target.value});
+    }
+
+    setDate = () => {
+        const todayDate = new Date();
+        const date = todayDate.getDate() + '.' + (todayDate.getMonth() + 1) + '.' + todayDate.getFullYear() + '-' + todayDate.getSeconds(); 
+        return date;
+    }
+
+    render = () => {
         return (
             <div>
                 <form onSubmit={this.onSubmit}>
-                    <input type="text" ref={(input) => this.input = input} />
+                    <input value={this.state.term} onChange = {this.onChange} />
                     <button type="submit">Add ToDo</button>
                 </form>
                 <ul>
@@ -44,19 +54,15 @@ class AddToDo extends Component {
                         {item.text}
                         <span>{item.date}</span>
                         <button>Edit</button>
-                        <button>Remove</button>
+                        <button onClick={this.deleteItem}>Remove</button>
                     </li>)
                     }
                 </ul> 
+
+                {/* <List items={this.state.items} onClick={this.deleteItem}/>   */}
             </div>   
         );
     }
 }
-
-// const setDate = () => {
-//     const todayDate = new Date();
-//     const date = todayDate.getDate() + '.' + (todayDate.getMonth() + 1) + '.' + todayDate.getFullYear() + '-' + todayDate.getSeconds(); 
-//     return date;
-// }   
 
 export default AddToDo;
