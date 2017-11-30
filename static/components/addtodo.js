@@ -22,16 +22,17 @@ class AddToDo extends Component {
                 date: new Date().toLocaleTimeString(),
             }
             
-            var newItems = [...this.state.items].push(newItem);
+            var newItems = [...this.state.items, newItem];
 
             this.setState({
                 items: newItems
             });
 
+            this.input.value = '';
         }
     }
 
-    render() {
+    render = () => {
         return (
             <div>
                 <form onSubmit={this.onSubmit}>

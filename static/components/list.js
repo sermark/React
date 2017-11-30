@@ -6,6 +6,8 @@ const setDate = () => {
     return date;
 }   
 
+const todoList = [];
+
 const List = props => (
     <ul>
         {
