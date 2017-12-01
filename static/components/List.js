@@ -25,7 +25,7 @@ class List extends Component {
         });
     }
 
-    removeItem (item) {
+    removeItem = (item) => {
         let filterItems = this.state.items.filter((elem) => {
             return elem.id !== item.id
         });
@@ -38,7 +38,7 @@ class List extends Component {
     createTodoList () {
         
         const todoList =[];
-        this.state.items.map(item => {
+        this.state.items.forEach(item => {
             todoList.push(
                 <ListItem key={item.id} item={item} id={item.id} removeItem={this.removeItem}/>
             )
@@ -48,9 +48,9 @@ class List extends Component {
 
     render () {
         return (
-                <ul>
-                    {this.createTodoList()}
-                </ul> 
+            <ul>
+                {this.createTodoList()}
+            </ul> 
         );
     }
 }
