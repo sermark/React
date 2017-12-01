@@ -1,38 +1,60 @@
 import React, { Component } from 'react';
-//import List from './list';
+import ListItem from './listitem';
+import uuidv4 from 'uuid/v4';
 
-class AddToDo extends Component {
+class List extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             items: []
         };
+        this.removeItem = this.removeItem.bind(this)
     }
 
     onSubmit = (event) => {
         event.preventDefault();
         const newValue = this.input.value;
-
+        
         if(newValue == '') {
             return false;
         } else {
             var newItem = {
                 text: newValue,
                 date: new Date().toLocaleTimeString(),
+                id: uuidv4()
             }
-            
             var newItems = [...this.state.items, newItem];
 
             this.setState({
                 items: newItems
             });
-
+            
             this.input.value = '';
         }
     }
 
-    render = () => {
+    removeItem (item) {
+        let filterItems = this.state.items.filter((eq) => {
+            return eq.id !== item.id
+        });
+
+        this.setState({
+            items: filterItems
+        });
+    }
+
+    createTodoList () {
+        const todoList =[];
+        this.state.items.map(item => {
+            todoList.push(
+                <ListItem key={item.id} item={item} id={item.id} removeItem={this.removeItem}/>
+            )
+        });
+        return todoList; 
+    }
+
+    render () {
         return (
             <div>
                 <form onSubmit={this.onSubmit}>
@@ -40,14 +62,7 @@ class AddToDo extends Component {
                     <button type="submit">Add ToDo</button>
                 </form>
                 <ul>
-                    {
-                    this.state.items.map((item,index) => <li key={index}>
-                        {item.text}
-                        <span>{item.date}</span>
-                        <button>Edit</button>
-                        <button>Remove</button>
-                    </li>)
-                    }
+                    {this.createTodoList()}
                 </ul> 
             </div>   
         );
@@ -60,4 +75,4 @@ class AddToDo extends Component {
 //     return date;
 // }   
 
-export default AddToDo;
+export default List;

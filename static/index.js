@@ -2,14 +2,14 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import './main.sass';
 
-import AddToDo from './components/addtodo';
+import List from './components/List';
 
 const dest = document.getElementById('root');
 
 class App extends Component {
   render() {
     return ( 
-        <AddToDo />
+        <List />
     );
   }
 }
