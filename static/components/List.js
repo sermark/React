@@ -9,7 +9,8 @@ class List extends Component {
         this.state = {
             items: []
         };
-        this.removeItem = this.removeItem.bind(this)
+        this.removeItem = this.removeItem.bind(this);
+        this.editItem = this.editItem.bind(this);
     }
 
     addTodo = (text) => {
@@ -23,6 +24,12 @@ class List extends Component {
         this.setState({
             items: newItems
         });
+    }
+
+    editItem = (item) => {
+        console.log(item.id);
+
+        console.log(this.props.onEdit(item))
     }
 
     removeItem = (item) => {
@@ -40,7 +47,7 @@ class List extends Component {
         const todoList =[];
         this.state.items.forEach(item => {
             todoList.push(
-                <ListItem key={item.id} item={item} id={item.id} removeItem={this.removeItem}/>
+                <ListItem key={item.id} item={item} id={item.id} removeItem={this.removeItem} editItem={this.editItem}/>
             )
         });
         return todoList; 

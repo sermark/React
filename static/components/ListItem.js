@@ -4,7 +4,7 @@ const ListItem = props => (
     <li>
         {props.item.text}
         <span>{props.item.date}</span>
-        <button>Edit</button>
+        <button onClick={() => props.editItem(props.item)}>Edit</button>
         <button onClick={() => props.removeItem(props.item)}>Remove</button>
     </li>
 );
