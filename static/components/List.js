@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import ListItem from './listitem';
-import uuidv4 from 'uuid/v4';
+import ListItem from './ListItem';
+import uuidv4 from 'uuid/v4'; // generate unique id
 
 class List extends Component {
     constructor(props) {
@@ -12,31 +12,22 @@ class List extends Component {
         this.removeItem = this.removeItem.bind(this)
     }
 
-    onSubmit = (event) => {
-        event.preventDefault();
-        const newValue = this.input.value;
-        
-        if(newValue == '') {
-            return false;
-        } else {
-            var newItem = {
-                text: newValue,
-                date: new Date().toLocaleTimeString(),
-                id: uuidv4()
-            }
-            var newItems = [...this.state.items, newItem];
-
-            this.setState({
-                items: newItems
-            });
-            
-            this.input.value = '';
+    addTodo = (text) => {
+        var newItem = {
+            text: text,
+            date: new Date().toLocaleTimeString(),
+            id: uuidv4()
         }
+        var newItems = [...this.state.items, newItem];
+
+        this.setState({
+            items: newItems
+        });
     }
 
     removeItem (item) {
-        let filterItems = this.state.items.filter((eq) => {
-            return eq.id !== item.id
+        let filterItems = this.state.items.filter((elem) => {
+            return elem.id !== item.id
         });
 
         this.setState({
@@ -45,6 +36,7 @@ class List extends Component {
     }
 
     createTodoList () {
+        
         const todoList =[];
         this.state.items.map(item => {
             todoList.push(
@@ -56,23 +48,11 @@ class List extends Component {
 
     render () {
         return (
-            <div>
-                <form onSubmit={this.onSubmit}>
-                    <input type="text" ref={(input) => this.input = input} />
-                    <button type="submit">Add ToDo</button>
-                </form>
                 <ul>
                     {this.createTodoList()}
                 </ul> 
-            </div>   
         );
     }
 }
-
-// const setDate = () => {
-//     const todayDate = new Date();
-//     const date = todayDate.getDate() + '.' + (todayDate.getMonth() + 1) + '.' + todayDate.getFullYear() + '-' + todayDate.getSeconds(); 
-//     return date;
-// }   
 
 export default List;
