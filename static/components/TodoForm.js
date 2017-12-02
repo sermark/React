@@ -7,6 +7,7 @@ class TodoForm extends Component {
 
         this.state = {
             term: '',
+            id: '',
         };
 
         this.onEdit = this.onEdit.bind(this);
@@ -17,13 +18,20 @@ class TodoForm extends Component {
         if(this.state.term == '') {
             return false;
         } else {
-            this.list.addTodo(this.state.term);
-            this.setState({term: ''});
+            this.list.addTodo(this.state);
+            this.setState({
+                term: '',
+                id: '',
+            });
         }
     }
 
     onEdit = (item) => {
-        console.log(item.text)
+        this.setState({
+            term: item.text,
+            id: item.id,
+        });
+        this.input.focus();
     }
 
     onChange = (event) => {
@@ -34,7 +42,7 @@ class TodoForm extends Component {
         return (
             <div>
                 <form onSubmit={this.onSubmit}>
-                    <input value={this.state.term} onChange={this.onChange} />
+                    <input value={this.state.term} onChange={this.onChange} ref={(input) => this.input = input} />
                     <button type="submit">Add ToDo</button>
                 </form>
                 <List ref={(list) => this.list = list} onEdit={this.onEdit} />

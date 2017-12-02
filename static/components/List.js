@@ -7,38 +7,47 @@ class List extends Component {
         super(props);
 
         this.state = {
-            items: []
+            items: [],
         };
         this.removeItem = this.removeItem.bind(this);
         this.editItem = this.editItem.bind(this);
     }
 
-    addTodo = (text) => {
-        var newItem = {
-            text: text,
-            date: new Date().toLocaleTimeString(),
-            id: uuidv4()
-        }
-        var newItems = [...this.state.items, newItem];
+    addTodo = (props) => {
+        let newItem = {};
+        let newItems = [];
 
-        this.setState({
-            items: newItems
-        });
+        if(props.id == '') {
+            newItem = {
+                text: props.term,
+                date: new Date().toLocaleTimeString(),
+                id: uuidv4(),
+            }
+            newItems = [...this.state.items, newItem];
+            this.setState({
+                items: newItems,
+            });
+        }
+        else {
+            this.state.items.map(elem => {
+                if (elem.id == props.id) {
+                    elem.text = props.term;
+                }
+            })
+        }
     }
 
     editItem = (item) => {
-        console.log(item.id);
-
-        console.log(this.props.onEdit(item))
+        this.props.onEdit(item);
     }
 
     removeItem = (item) => {
         let filterItems = this.state.items.filter((elem) => {
-            return elem.id !== item.id
+            return elem.id !== item.id;
         });
 
         this.setState({
-            items: filterItems
+            items: filterItems,
         });
     }
 
