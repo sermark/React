@@ -20,7 +20,7 @@ class List extends Component {
         if(props.id == '') {
             newItem = {
                 text: props.term,
-                date: new Date().toLocaleTimeString(),
+                date: new Date().getSeconds(),
                 id: uuidv4(),
             }
             newItems = [...this.state.items, newItem];
@@ -29,7 +29,7 @@ class List extends Component {
             });
         }
         else {
-            this.state.items.map(elem => {
+            this.state.items.forEach(elem => {
                 if (elem.id == props.id) {
                     elem.text = props.term;
                 }
@@ -48,6 +48,17 @@ class List extends Component {
 
         this.setState({
             items: filterItems,
+        });
+    }
+
+    sort = () => {
+        function sortItems (itemA, itemB) {
+            return itemB.date - itemA.date
+        }
+
+        let sortArray = this.state.items.sort(sortItems);
+        this.setState({
+            items: sortArray,
         });
     }
 

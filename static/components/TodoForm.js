@@ -38,12 +38,18 @@ class TodoForm extends Component {
         this.setState({term: event.target.value})
     }
 
+    sort = (event) => {
+        event.preventDefault();
+        this.list.sort();
+    }
+
     render () {
         return (
             <div>
                 <form onSubmit={this.onSubmit}>
                     <input value={this.state.term} onChange={this.onChange} ref={(input) => this.input = input} />
                     <button type="submit">Add ToDo</button>
+                    <button onClick={this.sort}>Sort</button>
                 </form>
                 <List ref={(list) => this.list = list} onEdit={this.onEdit} />
             </div>    
