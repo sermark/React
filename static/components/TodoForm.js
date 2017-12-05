@@ -8,22 +8,22 @@ class TodoForm extends Component {
         this.state = {
             term: '',
             id: '',
+            sort: false,
         };
-
-        this.onEdit = this.onEdit.bind(this);
     }
 
     onSubmit = (event) => {
         event.preventDefault();
-        if(this.state.term == '') {
-            return false;
-        } else {
-            this.list.addTodo(this.state);
-            this.setState({
-                term: '',
-                id: '',
-            });
-        }
+        if (this.state.id === '') {
+            if(this.state.term === '') {
+                return false;
+            } else this.list.addTodo(this.state);
+        } else this.list.applyEdit(this.state);
+
+        this.setState({
+            term: '',
+            id: '',
+        });
     }
 
     onEdit = (item) => {
@@ -38,9 +38,12 @@ class TodoForm extends Component {
         this.setState({term: event.target.value})
     }
 
-    sort = (event) => {
+    sorting = (event) => {
         event.preventDefault();
-        this.list.sort();
+        this.list.sort(this.state);
+        this.setState({
+            sort: !this.state.sort,
+        });
     }
 
     render () {
@@ -48,8 +51,8 @@ class TodoForm extends Component {
             <div>
                 <form onSubmit={this.onSubmit}>
                     <input value={this.state.term} onChange={this.onChange} ref={(input) => this.input = input} />
-                    <button type="submit">Add ToDo</button>
-                    <button onClick={this.sort}>Sort</button>
+                    <button type="submit">{(this.state.id === '') ? 'addTodo' : 'applyEdit'}</button>
+                    <button onClick={this.sorting}>{this.state.sort ? 'Sort(up)' : 'Sort(down)'}</button>
                 </form>
                 <List ref={(list) => this.list = list} onEdit={this.onEdit} />
             </div>    

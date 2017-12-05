@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ListItem from './ListItem';
-import uuidv4 from 'uuid/v4'; // generate unique id
+import uuidv4 from 'uuid/v4'; // generate unique id (redis)
 
 class List extends Component {
     constructor(props) {
@@ -9,32 +9,31 @@ class List extends Component {
         this.state = {
             items: [],
         };
-        this.removeItem = this.removeItem.bind(this);
-        this.editItem = this.editItem.bind(this);
     }
 
     addTodo = (props) => {
-        let newItem = {};
-        let newItems = [];
+        let newItem = {
+            text: props.term,
+            date: new Date().getSeconds(),
+            id: uuidv4(),
+        }
+        let newItems = [...this.state.items, newItem];
+        this.setState({
+            items: newItems,
+        });
+    }
 
-        if(props.id == '') {
-            newItem = {
-                text: props.term,
-                date: new Date().getSeconds(),
-                id: uuidv4(),
+    applyEdit = (props) => {
+        let editItems = [...this.state.items];
+        editItems.forEach(elem => {
+            if (elem.id === props.id) {
+                elem.text = props.term
             }
-            newItems = [...this.state.items, newItem];
-            this.setState({
-                items: newItems,
-            });
-        }
-        else {
-            this.state.items.forEach(elem => {
-                if (elem.id == props.id) {
-                    elem.text = props.term;
-                }
-            })
-        }
+        })
+
+        this.setState({
+            items: editItems,
+        });
     }
 
     editItem = (item) => {
@@ -51,19 +50,20 @@ class List extends Component {
         });
     }
 
-    sort = () => {
+    sort = (props) => {
         function sortItems (itemA, itemB) {
-            return itemB.date - itemA.date
+            if (props.sort) {
+                return itemA.date - itemB.date;
+            } else return itemB.date - itemA.date;
         }
-
-        let sortArray = this.state.items.sort(sortItems);
+        let sortArray = [...this.state.items];
+        sortArray.sort(sortItems);
         this.setState({
             items: sortArray,
         });
     }
 
     createTodoList () {
-        
         const todoList =[];
         this.state.items.forEach(item => {
             todoList.push(
