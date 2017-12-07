@@ -9,10 +9,17 @@ class TodoForm extends Component {
             term: '',
             id: '',
             sort: false,
+            itemsList: [],
         };
     }
 
-    onSubmit = (event) => {
+    copyArray = items => {
+        this.setState({
+            itemsList: items,
+        });
+    }
+
+    onSubmit = event => {
         event.preventDefault();
         if (this.state.id === '') {
             if(this.state.term === '') {
@@ -26,7 +33,7 @@ class TodoForm extends Component {
         });
     }
 
-    onEdit = (item) => {
+    onEdit = item => {
         this.setState({
             term: item.text,
             id: item.id,
@@ -34,11 +41,15 @@ class TodoForm extends Component {
         this.input.focus();
     }
 
-    onChange = (event) => {
+    searching = text => {
+        this.list.searchItem(text);
+    }
+
+    onChange = event => {
         this.setState({term: event.target.value})
     }
 
-    sorting = (event) => {
+    sorting = event => {
         event.preventDefault();
         this.list.sort(this.state);
         this.setState({
@@ -54,7 +65,7 @@ class TodoForm extends Component {
                     <button type="submit">{(this.state.id === '') ? 'addTodo' : 'applyEdit'}</button>
                     <button onClick={this.sorting}>{this.state.sort ? 'Sort(up)' : 'Sort(down)'}</button>
                 </form>
-                <List ref={(list) => this.list = list} onEdit={this.onEdit} />
+                <List ref={(list) => this.list = list} onEdit={this.onEdit} copyArray={this.copyArray} itemsList={this.state.itemsList}/>
             </div>    
         );
     }
