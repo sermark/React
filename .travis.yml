@@ -3,7 +3,7 @@ node_js:
   - stable
 
 script: 
-  - npm build
+  - npm run build
 
 deploy:
   provider: pages
