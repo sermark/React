@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ListItem from './ListItem';
-import uuidv4 from 'uuid/v4'; // generate unique id (redis)
+import uuidv4 from 'uuid/v4'; // generate unique id
 
 class List extends Component {
     constructor(props) {
@@ -11,56 +11,69 @@ class List extends Component {
         };
     }
 
-    addTodo = (props) => {
-        let newItem = {
+    addTodo = props => {
+        const newItem = {
             text: props.term,
             date: new Date().getSeconds(),
             id: uuidv4(),
         }
-        let newItems = [...this.state.items, newItem];
+        const items = [...this.state.items, newItem];
+
         this.setState({
-            items: newItems,
+            items,
         });
+
+        this.props.copyArray(items);
     }
 
-    applyEdit = (props) => {
-        let editItems = [...this.state.items];
-        editItems.forEach(elem => {
+    applyEdit = props => {
+        const items = props.itemsList.map(elem => {
             if (elem.id === props.id) {
                 elem.text = props.term
             }
+            return elem
         })
 
         this.setState({
-            items: editItems,
+            items,
         });
     }
 
-    editItem = (item) => {
+    editItem = item => {
         this.props.onEdit(item);
     }
 
-    removeItem = (item) => {
-        let filterItems = this.state.items.filter((elem) => {
-            return elem.id !== item.id;
-        });
+    removeItem = item => {
+        const items = this.state.items.filter(elem => elem.id !== item.id);
 
         this.setState({
-            items: filterItems,
+            items,
+        });
+
+        this.props.copyArray(items);
+    }
+
+    searchItem = searchText => {
+        const items = this.props.itemsList.filter(elem => elem.text.toLowerCase().includes(searchText.toLowerCase()));
+        
+        this.setState({
+            items,
         });
     }
 
-    sort = (props) => {
+    sort = props => {
         function sortItems (itemA, itemB) {
             if (props.sort) {
                 return itemA.date - itemB.date;
             } else return itemB.date - itemA.date;
         }
-        let sortArray = [...this.state.items];
-        sortArray.sort(sortItems);
+        const items = [...this.state.items];
+        items.sort(sortItems);
         this.setState({
-            items: sortArray,
+            items,
         });
+
+        this.props.copyArray(items);
     }
 
     createTodoList () {
