@@ -7,7 +7,7 @@ script:
 
 deploy:
   provider: pages
-  local_dir: "public"
+  local_dir: "static/build"
   skip_cleanup: true
   github_token: $GITHUB_PAGES
   on:
