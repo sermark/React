@@ -21,10 +21,26 @@ class MyEditor extends Component {
         this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
     }
 
+    _onItalicClick = () => {
+        this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'ITALIC'));
+    }
+
+    _onUnderlineClick = () => {
+        this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'UNDERLINE'));
+    }
+
+    _onOlClick = () => {
+        this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'OL'));
+    }
+
+
     render () {
       return (
         <div>
             <button onClick={this._onBoldClick.bind(this)}>Bold</button>
+            <button onClick={this._onItalicClick.bind(this)}>Italic</button>
+            <button onClick={this._onUnderlineClick.bind(this)}>Underline</button>
+            <button onClick={this._onOlClick.bind(this)}>OL</button>
             <Editor editorState={this.state.editorState} onChange={this.onChange} handleKeyCommand={this.handleKeyCommand}/>
         </div>    
         );

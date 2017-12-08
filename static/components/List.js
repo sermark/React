@@ -17,22 +17,7 @@ class List extends Component {
             date: new Date().getSeconds(),
             id: uuidv4(),
         }
-        const newItems = [...this.state.items, newItem];
-
-        this.setState({
-            items: newItems,
-        });
-
-        this.props.copyArray(newItems);
-    }
-
-    applyEdit = props => {
-        const items = [...this.state.items];
-        items.forEach(elem => {
-            if (elem.id === props.id) {
-                elem.text = props.term
-            }
-        })
+        const items = [...this.state.items, newItem];
 
         this.setState({
             items,
@@ -41,12 +26,25 @@ class List extends Component {
         this.props.copyArray(items);
     }
 
+    applyEdit = props => {
+        const items = props.itemsList.map(elem => {
+            if (elem.id === props.id) {
+                elem.text = props.term
+            }
+            return elem
+        })
+
+        this.setState({
+            items,
+        });
+    }
+
     editItem = item => {
         this.props.onEdit(item);
     }
 
     removeItem = item => {
-        const items = this.state.items.filter((elem) => elem.id !== item.id);
+        const items = this.state.items.filter(elem => elem.id !== item.id);
 
         this.setState({
             items,
@@ -56,7 +54,7 @@ class List extends Component {
     }
 
     searchItem = searchText => {
-        const items = this.props.itemsList.filter(elem => elem.text.includes(searchText));
+        const items = this.props.itemsList.filter(elem => elem.text.toLowerCase().includes(searchText.toLowerCase()));
         
         this.setState({
             items,
@@ -76,7 +74,6 @@ class List extends Component {
         });
 
         this.props.copyArray(items);
-        
     }
 
     createTodoList () {
