@@ -1,39 +1,53 @@
-const todo = (state, action) => {
-  switch (action.type) {
-    case 'ADD_TODO':
-      return {
-        id: action.id,
-        text: action.text,
-        completed: false
-      }
-    case 'TOGGLE_TODO':
-      if (state.id !== action.id) {
-        return state
-      }
-
-      return Object.assign({}, state, {
-        completed: !state.completed
-      })
-
-    default:
-      return state
-  }
+const initialState = {
+    sortFilter: false,
+    todos: []
 }
-  
+
 const todos = (state = [], action) => {
-  switch (action.type) {
-    case 'ADD_TODO':
-      return [
-        ...state,
-        todo(undefined, action)
-      ]
-    case 'TOGGLE_TODO':
-      return state.map(t =>
-        todo(t, action)
-      )
-    default:
-      return state
-  }
+    switch (action.type) {
+        case 'ADD_TODO':
+            const newTodo = {
+                text: action.text,
+                id: action.id,
+                completed: false,
+                date: new Date().getSeconds(),         
+            };
+            return Object.assign({}, state, {
+                todos: [...state.todos, newTodo]
+            })
+
+        case 'REMOVE_TODO':
+            const items = state.todos.filter(elem => elem.id !== action.id);
+            return Object.assign({}, state, {todos: items})
+        
+        case 'EDIT_TODO':
+            return Object.assign({}, state, {
+                todos: state.todos.map(todo => {
+                    if(todo.id === action.id) {
+                        return Object.assign({}, todo, {
+                            text: action.text,
+                            date: new Date().getSeconds(),
+                        })
+                    }
+                    return todo
+                }),
+            })
+
+        case 'TOGGLE_TODO': 
+            return Object.assign({}, state, {
+                todos: state.todos.map(todo => {
+                    if (todo.id === action.id) {
+                        return Object.assign({}, todo, {
+                            completed: !todo.completed,
+                        })
+                    }
+                    return todo
+                })
+            })
+
+        default:
+            return state    
+    }
 }
 
-export default todos
+export default todos;
