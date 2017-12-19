@@ -1,52 +1,64 @@
 import uuidv4 from 'uuid/v4'; // generate unique id
+import api from '../api';
 
-let nextTodoId = 0
-//--------Action Creators
-//  action creators return an action
-//  to initiate a dispatch, pass the result to the dispatch() function:
-//  dispatch(addTodo(text))
-
-
-export const addTodo = text => {
-  return {
-    type: 'ADD_TODO',
-    id: nextTodoId++,
-    text,
-  }
+export const fetchNotes = () => {
+    return function thunk (dispatch) {
+        return api.listNotes().then( ({data}) => {
+            dispatch(fetchNotesSuccess(data))
+        }).catch((err) => {
+            console.warn(err);
+        });
+    }
 }
 
-export const removeTodo = id => {
-  return {
-    type: 'REMOVE_TODO',
-    id,
-  }
+export const fetchNotesSuccess = (payload) => {
+    return {
+        type: 'FETCH_NOTES_SUCCESS',
+        payload,
+    }
 }
 
-export const editTodo = (text, id) => {
-  return{
-    type: 'EDIT_TODO',
-    id,
-    text,
-  }
+export const addNote = (payload) => {
+    return function thunk (dispatch) {
+        return api.createNote(payload).then(() => {
+            dispatch(fetchNotes());
+        }).catch((err) => {
+            console.warn(err);
+        })
+    }
 }
 
-export const toggleTodo = id => {
-  return {
-    type: 'TOGGLE_TODO',
-    id,
-  }
+export const deleteNote = (payload) => {
+    const noteId = payload._id;
+    return function thunk (dispatch) {
+        return api.deleteNote(noteId).then(() => {
+            dispatch(fetchNotes());
+        }).catch((err) => {
+            console.warn(err);
+        })
+    }
+}
+
+export const updateNote = (payload) => {
+    return function thunk (dispatch) {
+        return api.updateNote(payload).then(() => {
+            dispatch(fetchNotes());
+        }).catch((err) => {
+            console.warn(err);
+        })
+    }
 }
 
 export const sortTodo = sortFilter => {
-  return {
-    type: 'SET_SORT',
-    sortFilter,
-  }
+    return {
+        type: 'SET_SORT',
+        sortFilter,
+    }
 }
 
-// export const setVisibilityFilter = (filter) => {
-//   return {
-//     type: 'SET_VISIBILITY_FILTER',
-//     filter: filter
-//   }
-// }
+export const setVisibilityFilter = visibilityFilter => {
+    return {
+        type: 'SET_VISIBILITY_FILTER',
+        visibilityFilter,
+    }
+}

@@ -25,24 +25,29 @@ const webpackConfig = {
 		loaders: [
 			{
 				// test: /\.jsx?$/,
-				exclude: [/node_modules/],
 				loader: "babel-loader",
 				query: {
 					presets: ['es2015', 'react', 'stage-0', 'stage-1']
-				}
+				},
+				exclude: [/node_modules/]
 			},
 			{
 				test: /\.sass$/,
 				use: ExtractTextPlugin.extract({
 					fallback: "style-loader",
 					use: ['css-loader', 'sass-loader']
-				})
-            }
+				}),
+				exclude: [/node_modules/]
+			},
+			{
+				test: /\.json$/,
+				loader: "json-loader"
+			}
 		]
 	},
     devServer: {
         host: 'localhost',
-        port: 8080,
+        port: 8000,
 		contentBase: './static/'
     },
 	plugins: [

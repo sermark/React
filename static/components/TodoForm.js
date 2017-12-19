@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as noteActions from '../actions';
+import List from './List';
+import api from '../api';
+import FooterLink from './FooterLink';
 
 
 class TodoForm extends Component {
@@ -10,40 +13,139 @@ class TodoForm extends Component {
 
         this.state = {
             text: '',
+            _id: '',
+            searchText: '',
         };
+    }
+
+    componentWillMount () {
+        this.props.actions.fetchNotes();
     }
 
     onSubmit = event => {
         event.preventDefault();
-        if (!this.state.text.trim()) {
-            return
+
+        const { text, _id } = this.state;
+        const date = new Date().getSeconds();
+
+        const note = {
+            text,
+            date,
+            completed: false,
         }
-        this.props.actions.addTodo(this.state.text);
-        this.setState({text: '',});
+
+        if (!this.state._id) {
+            this.props.actions.addNote(note);
+        } else {
+            const updatedElement = {
+                text,
+                _id,
+                date,
+            };
+            this.props.actions.updateNote(updatedElement);
+        }
+        
+        this.setState({
+            text: '',
+            _id: '',
+        });
     }
 
     onChange = event => {
         this.setState({text: event.target.value,});
-        console.log(this.props.todos);
+        this.props.actions.sortTodo(true);
+        console.log(this.props.sortFilter);
     }
     
+    onHandleEdit = (text, _id) => {
+        this.setState({
+            text,
+            _id,
+        });
+    }
+
+    onHandleRemove = (item) => {
+        this.props.actions.deleteNote(item);
+    }
+
+    onHandleSearch = (event) => {
+        this.setState({
+            searchText: event.target.value,
+        })
+    }
+
+    onHandleClick = (item) => {
+        const { text, _id, date, completed} = item;
+        const updatedElement = {
+            text,
+            _id,
+            date,
+            completed: !completed,
+        };
+        this.props.actions.updateNote(updatedElement);
+    }
+
+    onHandleSetVisibility = (filter) => {
+        this.props.actions.setVisibilityFilter(filter);
+    }
+
     render () {
+        const { _id, text, searchText } = this.state;
+        const { todos, visibilityFilter } = this.props;
+
         return (
             <div>
+                <input 
+                    type="text"
+                    placeholder='Search...'
+                    onChange={this.onHandleSearch}
+
+                />
                 <form onSubmit={this.onSubmit}>
-                    <input value={this.state.term} onChange={this.onChange} />
-                    <button type="submit">AddTodo</button>
+                    <textarea
+                        placeholder='Enter note text'
+                        rows={3}
+                        value={this.state.text}
+                        onChange={this.onChange}
+                    />
+                    <button
+                        type="submit"
+                        disabled={!text}
+                    >
+                        {(!_id) ? 'Add Note' : 'Save Changes'}
+                    </button>
                 </form>
+                <List 
+                    onHandleEdit={this.onHandleEdit}
+                    onHandleRemove={this.onHandleRemove}
+                    onHandleClick={this.onHandleClick}
+                    todoItems={todos}
+                    searchText={searchText}
+                />
+                <FooterLink onHandleSetVisibility={this.onHandleSetVisibility}/>
             </div>    
         );
         
     }
 }
 
+const getVisibleTodos = (todos, filter) => {
+    switch (filter) {
+        case 'SHOW_ALL':
+            return todos
+        case 'SHOW_COMPLETED':
+            return todos.filter(elem => elem.completed)
+        case 'SHOW_ACTIVE':
+            return todos.filter(elem => !elem.completed)
+    }
+}
+
 function mapStateToProps(state) {
+    const { todos, sortFilter, visibilityFilter } = state;
+
     return {
-      todos: state,
-      
+      todos: getVisibleTodos(todos, visibilityFilter),
+      sortFilter: sortFilter,
     }
 }
 

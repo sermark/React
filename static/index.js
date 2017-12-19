@@ -11,24 +11,6 @@ import App from './components/App';
 
 let store = configureStore();
 
-
-let unsubscribe = store.subscribe(() =>
-    console.log(store.getState())
-)
-
-// store.dispatch(addTodo('Learn about actions'));
-// store.dispatch(addTodo('Learn about actions2'));
-// store.dispatch(addTodo('Learn about actions4'));
-
-
-// store.dispatch(editTodo("ololo", 0));
-
-// store.dispatch(toggleTodo(2));
-
-// store.dispatch(sortTodo(true));
-// store.dispatch(sortTodo(false));
-
-
 render(
   <Provider store={store}>
     <App/>

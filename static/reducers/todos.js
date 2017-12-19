@@ -1,52 +1,12 @@
-const initialState = {
-    sortFilter: false,
-    todos: []
-}
+import api from '../api';
 
 const todos = (state = [], action) => {
     switch (action.type) {
-        case 'ADD_TODO':
-            const newTodo = {
-                text: action.text,
-                id: action.id,
-                completed: false,
-                date: new Date().getSeconds(),         
-            };
-            return Object.assign({}, state, {
-                todos: [...state.todos, newTodo]
-            })
-
-        case 'REMOVE_TODO':
-            const items = state.todos.filter(elem => elem.id !== action.id);
-            return Object.assign({}, state, {todos: items})
-        
-        case 'EDIT_TODO':
-            return Object.assign({}, state, {
-                todos: state.todos.map(todo => {
-                    if(todo.id === action.id) {
-                        return Object.assign({}, todo, {
-                            text: action.text,
-                            date: new Date().getSeconds(),
-                        })
-                    }
-                    return todo
-                }),
-            })
-
-        case 'TOGGLE_TODO': 
-            return Object.assign({}, state, {
-                todos: state.todos.map(todo => {
-                    if (todo.id === action.id) {
-                        return Object.assign({}, todo, {
-                            completed: !todo.completed,
-                        })
-                    }
-                    return todo
-                })
-            })
-
+        case 'FETCH_NOTES_SUCCESS':
+            return state = action.payload
+    
         default:
-            return state    
+            return state
     }
 }
 
