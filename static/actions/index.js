@@ -1,4 +1,3 @@
-import uuidv4 from 'uuid/v4'; // generate unique id
 import api from '../api';
 
 export const fetchNotes = () => {

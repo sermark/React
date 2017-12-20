@@ -53,8 +53,6 @@ class TodoForm extends Component {
 
     onChange = event => {
         this.setState({text: event.target.value,});
-        this.props.actions.sortTodo(true);
-        console.log(this.props.sortFilter);
     }
     
     onHandleEdit = (text, _id) => {
@@ -89,9 +87,15 @@ class TodoForm extends Component {
         this.props.actions.setVisibilityFilter(filter);
     }
 
+    onHandleSort = (event) => {
+        event.preventDefault();
+        const sortFilter = this.props.sortFilter;
+        this.props.actions.sortTodo(!sortFilter);
+    }
+
     render () {
         const { _id, text, searchText } = this.state;
-        const { todos, visibilityFilter } = this.props;
+        const { todos, sortFilter } = this.props;
 
         return (
             <div>
@@ -101,6 +105,7 @@ class TodoForm extends Component {
                     onChange={this.onHandleSearch}
 
                 />
+                <button onClick={this.onHandleSort}>{(!sortFilter) ? 'Sort' : 'Unsort'}</button>
                 <form onSubmit={this.onSubmit}>
                     <textarea
                         placeholder='Enter note text'
@@ -140,18 +145,29 @@ const getVisibleTodos = (todos, filter) => {
     }
 }
 
+const getSortTodo = (todos, sortFilter) => {
+    function sortItems (itemA, itemB) {
+        if (sortFilter) {
+            return itemA.date - itemB.date;
+        } else return itemB.date - itemA.date;
+    }
+    const items = [...todos];
+    return items.sort(sortItems);
+}
+
 function mapStateToProps(state) {
     const { todos, sortFilter, visibilityFilter } = state;
 
     return {
-      todos: getVisibleTodos(todos, visibilityFilter),
-      sortFilter: sortFilter,
+        todos: getSortTodo(getVisibleTodos(todos, visibilityFilter), sortFilter),
+        // todos: getVisibleTodos(todos, visibilityFilter),
+        sortFilter,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-      actions: bindActionCreators(noteActions, dispatch)
+        actions: bindActionCreators(noteActions, dispatch)
     }
 }
 
