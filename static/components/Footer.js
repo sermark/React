@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import './style/Footer.sass';
 
-class FooterLink extends Component {
+class Footer extends Component {
     constructor(props) {
         super(props);
 
@@ -18,7 +19,7 @@ class FooterLink extends Component {
         this.props.onHandleSetVisibility(event.target.dataset.filter);
         
         const activeLink = document.querySelector('.active');
-        const links = document.querySelectorAll('.link');
+        const links = document.querySelectorAll('.btn-select');
 
         links.forEach(elem => {
             elem.addEventListener('click', function () {
@@ -30,12 +31,12 @@ class FooterLink extends Component {
 
     render () {
         return (
-            <ul>
-                <li><a href="#" onClick={this.onClick} data-filter='SHOW_ALL' className='link active'>All</a></li>
-                <li><a href="#" onClick={this.onClick} data-filter='SHOW_COMPLETED' className='link'>Completed</a></li>
-                <li><a href="#" onClick={this.onClick} data-filter='SHOW_ACTIVE' className='link'>Active</a></li>
-            </ul> 
+            <div className='footer-container'>
+                <button onClick={this.onClick} data-filter='SHOW_ALL' className='btn btn-select active'>All</button>
+                <button onClick={this.onClick} data-filter='SHOW_COMPLETED' className='btn btn-select'>Completed</button>
+                <button onClick={this.onClick} data-filter='SHOW_ACTIVE' className='btn btn-select'>Active</button>
+            </div> 
         );
     }
 }
-export default FooterLink;
+export default Footer;

@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as noteActions from '../actions';
 
 import ListItem from './ListItem';
+import './style/List.sass'
 
 class List extends Component {
     constructor(props) {
@@ -14,28 +15,10 @@ class List extends Component {
         };
     }
 
-    createTodoList () {
-        const todoList = [];
-        this.props.todoItems.forEach(item => {
-            todoList.push(
-                <ListItem 
-                    key={item._id}
-                    item={item}
-                    id={item._id}
-                    handleRemove={this.handleRemove}
-                    handleEdit={this.handleEdit}
-                    handleClick={this.handleClick}
-                />
-            )
-        });
-        return todoList; 
-    }
-
     searchItems = (searchText) => {
-        const searchList = [];
-        this.props.todoItems.forEach(item => {
-            if (item.text.toLowerCase().includes(searchText.toLowerCase())){
-                searchList.push(
+        return this.props.todoItems.reduce((acc, item) => {
+            if (!searchText || item.text.toLowerCase().includes(searchText.toLowerCase())){
+                acc.push(
                     <ListItem 
                         key={item._id}
                         item={item}
@@ -46,8 +29,8 @@ class List extends Component {
                     />
                 )
             }
-        });
-        return searchList
+            return acc;
+        }, []);
     }
 
     handleRemove = (item) => {
@@ -65,8 +48,8 @@ class List extends Component {
     render () {
         const { searchText } = this.props;
         return (
-            <ul>
-                {(!searchText) ? this.createTodoList() : this.searchItems(searchText)}
+            <ul className='note-list'>
+                {this.searchItems(searchText)}
             </ul> 
         );
     }

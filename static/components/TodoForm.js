@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux';
 import * as noteActions from '../actions';
 import List from './List';
 import api from '../api';
-import FooterLink from './FooterLink';
+import Footer from './Footer';
+import './style/TodoForm.sass'
 
 
 class TodoForm extends Component {
@@ -18,7 +19,7 @@ class TodoForm extends Component {
         };
     }
 
-    componentWillMount () {
+    componentDidMount () {
         this.props.actions.fetchNotes();
     }
 
@@ -99,22 +100,27 @@ class TodoForm extends Component {
 
         return (
             <div>
-                <input 
-                    type="text"
-                    placeholder='Search...'
-                    onChange={this.onHandleSearch}
+                <div className='wrapper'>
+                    <input 
+                        type="text"
+                        placeholder='Search...'
+                        onChange={this.onHandleSearch}
+                        className='search-field'
 
-                />
-                <button onClick={this.onHandleSort}>{(!sortFilter) ? 'Sort' : 'Unsort'}</button>
-                <form onSubmit={this.onSubmit}>
+                    />
+                    <button onClick={this.onHandleSort} className='btn btn-sort'>{(!sortFilter) ? 'Sort' : 'Unsort'}</button>
+                </div>
+                <form onSubmit={this.onSubmit} className='todo-form'>
                     <textarea
                         placeholder='Enter note text'
+                        className='input-field'
                         rows={3}
                         value={this.state.text}
                         onChange={this.onChange}
                     />
                     <button
                         type="submit"
+                        className='btn btn-add'
                         disabled={!text}
                     >
                         {(!_id) ? 'Add Note' : 'Save Changes'}
@@ -127,7 +133,7 @@ class TodoForm extends Component {
                     todoItems={todos}
                     searchText={searchText}
                 />
-                <FooterLink onHandleSetVisibility={this.onHandleSetVisibility}/>
+                <Footer onHandleSetVisibility={this.onHandleSetVisibility} />
             </div>    
         );
         
@@ -160,7 +166,6 @@ function mapStateToProps(state) {
 
     return {
         todos: getSortTodo(getVisibleTodos(todos, visibilityFilter), sortFilter),
-        // todos: getVisibleTodos(todos, visibilityFilter),
         sortFilter,
     }
 }
