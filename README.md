@@ -13,7 +13,8 @@ This application allows you:
 7. mark note as complete
 8. save notes on the server
 
+```
 - npm i
-
 - npm start - run webpack dev-server (localhost:8000)
 - npm server - run backend server (localhost:8001)
+```
