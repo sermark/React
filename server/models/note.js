@@ -3,7 +3,9 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const NoteSchema = new Schema({
-  title: {type: String} //type can be number, string, collection and etc. see mongoose
+    text: {type: String, required: true},
+    date: {type: String},
+    completed: {type: Boolean},
 });
 
 const Note = mongoose.model('Note', NoteSchema);

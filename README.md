@@ -1,19 +1,20 @@
-# React
-react + webpack
+# Todo
+react-redux + webpack + backend
 
+Todo application
 
+This application allows you
+    1. create notes
+    2. edit notes
+    3. remove
+    4. search by note's name
+    5. sort
+    6. change visability by filter
+    7. mark note as complete
+    8. save notes on the server
+
+npm i
+
+npm start - run webpack dev-server (localhost:8000)
+npm server - run backend server (localhost:8001)
 -------------------------------------------------------------------------------------------------
-Задача: Приложение для заметок, адаптивное, кроссбраузерное (от IE10). За основу можно взять https://simplenote.com/
-
-В основу берем React. Так же используем Gulp/webpack и все доступные технологии для уменьшения времени разработки.
-1) Страница авторизации (можно просто в константы забить логин и пароль)
-2) Страница заметок.Должны быть возможности:
- 1. создание заметки
- 2. редактирование заметки
- 3. удаление заметки
- 4. автосохранение (в базу или в файл)
- 5. поиск по списку заметок
- 6. дата создания или последнего редактирования.
- 7. сортировка по дате создания (от новых к старым и т.д.)
-
- Для работы с текстом заметок можно использовать компонент https://facebook.github.io/draft-js/

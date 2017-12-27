@@ -1,74 +1,179 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as noteActions from '../actions';
 import List from './List';
+import api from '../api';
+import Footer from './Footer';
+import './style/TodoForm.sass'
+
 
 class TodoForm extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            term: '',
-            id: '',
-            sort: false,
-            itemsList: [],
+            text: '',
+            _id: '',
+            searchText: '',
         };
     }
 
-    copyArray = items => {
-        this.setState({
-            itemsList: items,
-        });
+    componentDidMount () {
+        this.props.actions.fetchNotes();
     }
 
     onSubmit = event => {
         event.preventDefault();
-        if (this.state.id === '') {
-            if(this.state.term === '') {
-                return false;
-            } else this.list.addTodo(this.state);
-        } else this.list.applyEdit(this.state);
 
+        const { text, _id } = this.state;
+        const date = new Date().getSeconds();
+
+        const note = {
+            text,
+            date,
+            completed: false,
+        }
+
+        if (!this.state._id) {
+            this.props.actions.addNote(note);
+        } else {
+            const updatedElement = {
+                text,
+                _id,
+                date,
+            };
+            this.props.actions.updateNote(updatedElement);
+        }
+        
         this.setState({
-            term: '',
-            id: '',
+            text: '',
+            _id: '',
         });
-    }
-
-    onEdit = item => {
-        this.setState({
-            term: item.text,
-            id: item.id,
-        });
-        this.input.focus();
-    }
-
-    searching = text => {
-        this.list.searchItem(text);
     }
 
     onChange = event => {
-        this.setState({term: event.target.value})
+        this.setState({text: event.target.value,});
     }
-
-    sorting = event => {
-        event.preventDefault();
-        this.list.sort(this.state);
+    
+    onHandleEdit = (text, _id) => {
         this.setState({
-            sort: !this.state.sort,
+            text,
+            _id,
         });
     }
 
+    onHandleRemove = (item) => {
+        this.props.actions.deleteNote(item);
+    }
+
+    onHandleSearch = (event) => {
+        this.setState({
+            searchText: event.target.value,
+        })
+    }
+
+    onHandleClick = (item) => {
+        const { text, _id, date, completed} = item;
+        const updatedElement = {
+            text,
+            _id,
+            date,
+            completed: !completed,
+        };
+        this.props.actions.updateNote(updatedElement);
+    }
+
+    onHandleSetVisibility = (filter) => {
+        this.props.actions.setVisibilityFilter(filter);
+    }
+
+    onHandleSort = (event) => {
+        event.preventDefault();
+        const sortFilter = this.props.sortFilter;
+        this.props.actions.sortTodo(!sortFilter);
+    }
+
     render () {
+        const { _id, text, searchText } = this.state;
+        const { todos, sortFilter } = this.props;
+
         return (
             <div>
-                <form onSubmit={this.onSubmit}>
-                    <input value={this.state.term} onChange={this.onChange} ref={(input) => this.input = input} />
-                    <button type="submit">{(this.state.id === '') ? 'addTodo' : 'applyEdit'}</button>
-                    <button onClick={this.sorting}>{this.state.sort ? 'Sort(up)' : 'Sort(down)'}</button>
+                <div className='wrapper'>
+                    <input 
+                        type="text"
+                        placeholder='Search...'
+                        onChange={this.onHandleSearch}
+                        className='search-field'
+
+                    />
+                    <button onClick={this.onHandleSort} className='btn btn-sort'>{(!sortFilter) ? 'Sort' : 'Unsort'}</button>
+                </div>
+                <form onSubmit={this.onSubmit} className='todo-form'>
+                    <textarea
+                        placeholder='Enter note text'
+                        className='input-field'
+                        rows={3}
+                        value={this.state.text}
+                        onChange={this.onChange}
+                    />
+                    <button
+                        type="submit"
+                        className='btn btn-add'
+                        disabled={!text}
+                    >
+                        {(!_id) ? 'Add Note' : 'Save Changes'}
+                    </button>
                 </form>
-                <List ref={(list) => this.list = list} onEdit={this.onEdit} copyArray={this.copyArray} itemsList={this.state.itemsList}/>
+                <List 
+                    onHandleEdit={this.onHandleEdit}
+                    onHandleRemove={this.onHandleRemove}
+                    onHandleClick={this.onHandleClick}
+                    todoItems={todos}
+                    searchText={searchText}
+                />
+                <Footer onHandleSetVisibility={this.onHandleSetVisibility} />
             </div>    
         );
+        
     }
 }
 
-export default TodoForm;
+const getVisibleTodos = (todos, filter) => {
+    switch (filter) {
+        case 'SHOW_ALL':
+            return todos
+        case 'SHOW_COMPLETED':
+            return todos.filter(elem => elem.completed)
+        case 'SHOW_ACTIVE':
+            return todos.filter(elem => !elem.completed)
+    }
+}
+
+const getSortTodo = (todos, sortFilter) => {
+    function sortItems (itemA, itemB) {
+        if (sortFilter) {
+            return itemA.date - itemB.date;
+        } else return itemB.date - itemA.date;
+    }
+    const items = [...todos];
+    return items.sort(sortItems);
+}
+
+function mapStateToProps(state) {
+    const { todos, sortFilter, visibilityFilter } = state;
+
+    return {
+        todos: getSortTodo(getVisibleTodos(todos, visibilityFilter), sortFilter),
+        sortFilter,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(noteActions, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoForm);

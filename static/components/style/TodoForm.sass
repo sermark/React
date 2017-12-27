@@ -1,0 +1,51 @@
+.todo-form
+  display: flex
+  flex-direction: column
+  align-items: center
+  padding: 20px
+
+  .input-field
+    width: 100%
+    max-width: 600px
+    margin-bottom: 20px
+    padding: 10px
+    border: solid 1px #ddd
+    resize: vertical
+    background-color: #e8eeef
+
+
+  .btn-add,
+    padding: 10px 20px
+    font-size: 16px
+    position: relative
+    background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0, rgb(62,184,229)), color-stop(1, rgb(44,160,202)) )
+    background-color: #3bb3e0
+    color: #fff
+    box-shadow: inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #156785, 0px 10px 5px #999
+
+    &:active
+      top: 3px
+      box-shadow: inset 0px 1px 0px #2ab7ec, 0px 2px 0px 0px #156785, 0px 5px 3px #999
+
+    &:disabled
+      cursor: default
+      color: grey
+
+.wrapper
+  display: flex
+  justify-content: center
+  padding-top: 20px
+
+.btn-sort
+  min-width: 80px
+  font-size: 16px
+  color: white
+  background-color: #03a87c
+
+  &:hover
+    background-color: #029e74
+
+.search-field
+  background-color: #e8eeef
+  padding: 10px
+  border: none

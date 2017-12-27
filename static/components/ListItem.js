@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
+import './style/ListItem.sass';
 
 const ListItem = props => (
-    <li>
-        {props.item.text}
-        <span>{props.item.date}</span>
-        <button onClick={() => props.editItem(props.item)}>Edit</button>
-        <button onClick={() => props.removeItem(props.item)}>Remove</button>
+    <li className='note'>
+        <p
+            className='note-text'
+            onClick={() => props.handleClick(props.item)}
+            style={{textDecoration: props.item.completed ? 'line-through' : 'none'}}
+        >
+            {props.item.text}
+        </p>
+        <span className='note-date'>date:{props.item.date}</span>
+        <button onClick={() => props.handleEdit(props.item.text, props.item._id)} className='btn btn-edit'>Edit</button>
+        <button onClick={() => props.handleRemove(props.item)} className='btn btn-remove'></button>
     </li>
 );
 

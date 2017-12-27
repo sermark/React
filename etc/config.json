@@ -1,9 +1,9 @@
 {
-    "apiPrefix": "http://localhost:3005",
-    "serverPort": "3005",
-    "db": {
-        "name": "notes",
-        "host": "localhost",
-        "port": 27017
-    }
+  "apiPrefix": "http://localhost:8001",
+  "serverPort": "8001",
+  "db": {
+    "name": "todolist",
+    "host": "localhost",
+    "port": 27017
+  }
 }

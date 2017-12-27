@@ -1,14 +1,23 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import todoApp from './reducers';
+import configureStore from './store/Store';
+import { addTodo, removeTodo, editTodo, toggleTodo, sortTodo } from './actions';
 import './main.sass';
 
+<<<<<<< HEAD
 import TodoForm from './components/TodoForm';
 import MyEditor from './components/draft';
 import SerchBar from './components/searchBar';
 // import axios from 'axios';
+=======
+>>>>>>> redux
 
-const dest = document.getElementById('root');
+import App from './components/App';
 
+<<<<<<< HEAD
 class App extends Component {
 
     search = searchText => {
@@ -24,5 +33,13 @@ class App extends Component {
         );
     }
 }
+=======
+const dest = document.getElementById('root');
+let store = configureStore();
+>>>>>>> redux
 
-ReactDOM.render(<App />, dest);
+render(
+  <Provider store={store}>
+    <App/>
+  </Provider>, dest
+)
