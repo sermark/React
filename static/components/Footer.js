@@ -35,8 +35,9 @@ class Footer extends Component {
                 <button onClick={this.onClick} data-filter='SHOW_ALL' className='btn btn-select active'>All</button>
                 <button onClick={this.onClick} data-filter='SHOW_COMPLETED' className='btn btn-select'>Completed</button>
                 <button onClick={this.onClick} data-filter='SHOW_ACTIVE' className='btn btn-select'>Active</button>
-            </div> 
+            </div>
         );
     }
 }
+
 export default Footer;

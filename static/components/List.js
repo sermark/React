@@ -6,17 +6,13 @@ import './style/List.sass'
 class List extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            items: [],
-        };
     }
 
     searchItems = (searchText) => {
         return this.props.todoItems.reduce((acc, item) => {
             if (!searchText || item.text.toLowerCase().includes(searchText.toLowerCase())){
                 acc.push(
-                    <ListItem 
+                    <ListItem
                         key={item._id}
                         item={item}
                         id={item._id}
@@ -47,7 +43,7 @@ class List extends Component {
         return (
             <ul className='note-list'>
                 {this.searchItems(searchText)}
-            </ul> 
+            </ul>
         );
     }
 }

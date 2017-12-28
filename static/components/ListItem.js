@@ -6,7 +6,6 @@ const ListItem = props => (
         <p
             className='note-text'
             onClick={() => props.handleClick(props.item)}
-            style={{textDecoration: props.item.completed ? 'line-through' : 'none'}}
         >
             {props.item.text}
         </p>

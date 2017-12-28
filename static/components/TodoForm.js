@@ -100,7 +100,7 @@ class TodoForm extends Component {
         return (
             <div>
                 <div className='wrapper'>
-                    <input 
+                    <input
                         type="text"
                         placeholder='Search...'
                         onChange={this.onHandleSearch}
@@ -125,7 +125,7 @@ class TodoForm extends Component {
                         {(!_id) ? 'Add Note' : 'Save Changes'}
                     </button>
                 </form>
-                <List 
+                <List
                     onHandleEdit={this.onHandleEdit}
                     onHandleRemove={this.onHandleRemove}
                     onHandleClick={this.onHandleClick}
@@ -133,7 +133,7 @@ class TodoForm extends Component {
                     searchText={searchText}
                 />
                 <Footer onHandleSetVisibility={this.onHandleSetVisibility} />
-            </div>    
+            </div>
         );
         
     }

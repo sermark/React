@@ -1,3 +1,5 @@
+@import '../../style/variables.sass'
+
 .todo-form
   display: flex
   flex-direction: column
@@ -11,7 +13,7 @@
     padding: 10px
     border: solid 1px #ddd
     resize: vertical
-    background-color: #e8eeef
+    background-color: $bg-note
 
 
   .btn-add,
@@ -39,13 +41,13 @@
 .btn-sort
   min-width: 80px
   font-size: 16px
-  color: white
-  background-color: #03a87c
+  color: $color_white
+  background-color: $btn-color
 
   &:hover
-    background-color: #029e74
+    background-color: $btn-color-hover
 
 .search-field
-  background-color: #e8eeef
+  background-color: $bg-note
   padding: 10px
   border: none
