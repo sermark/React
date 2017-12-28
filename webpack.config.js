@@ -24,7 +24,12 @@ const webpackConfig = {
 	module: {
 		loaders: [
 			{
-				// test: /\.jsx?$/,
+				test: /\.js$/,
+				loader: 'eslint-loader',
+				exclude: /node_modules/,
+			},
+			{
+				test: /\.jsx?$/,
 				loader: "babel-loader",
 				query: {
 					presets: ['es2015', 'react', 'stage-0', 'stage-1']

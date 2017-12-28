@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as noteActions from '../actions';
 import List from './List';
-import api from '../api';
 import Footer from './Footer';
-import './style/TodoForm.sass'
+import './style/TodoForm.sass';
 
 
 class TodoForm extends Component {
@@ -161,7 +160,7 @@ const getSortTodo = (todos, sortFilter) => {
     return items.sort(sortItems);
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const { todos, sortFilter, visibilityFilter } = state;
 
     return {
@@ -170,7 +169,7 @@ function mapStateToProps(state) {
     }
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(noteActions, dispatch)
     }

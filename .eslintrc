@@ -1,0 +1,15 @@
+{
+  parser: "babel-eslint",
+  "rules": {
+    "max-len" : [1, 520, 4, {ignoreComments: true}],
+    "no-console": 0,
+    "no-unused-vars": ["error", { "vars": "local", "args": "after-used", "ignoreRestSiblings": false }],
+    "no-trailing-spaces": [2, { "skipBlankLines": true }]
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "env": {
+    "browser" : true,
+    "amd": true,
+    "node" : true
+  },
+}

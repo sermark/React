@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './style/ListItem.sass';
 
 const ListItem = props => (
-    <li className='note'>
+    <li className={props.item.completed ? 'note completed' : 'note'}>
         <p
             className='note-text'
             onClick={() => props.handleClick(props.item)}
