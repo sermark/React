@@ -107,7 +107,10 @@ class TodoForm extends Component {
                         className='search-field'
 
                     />
-                    <button onClick={this.onHandleSort} className='btn btn-sort'>{(!sortFilter) ? 'Sort' : 'Unsort'}</button>
+                    <button
+                        onClick={this.onHandleSort}
+                        className='btn btn-sort'>{(!sortFilter) ? 'Sort' : 'Unsort'}
+                    </button>
                 </div>
                 <form onSubmit={this.onSubmit} className='todo-form'>
                     <textarea

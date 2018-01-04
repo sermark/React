@@ -13,7 +13,7 @@ export default {
 
     deleteNote(noteId) {
         return axios.delete(`${apiPrefix}/todolist/${noteId}`);
-    },    
+    },
 
     getNote(noteId) {
         return axios.get(`${apiPrefix}/todolist/${noteId}`);
